@@ -39,29 +39,6 @@ export default function InfiniteList(component) {
         dataList: []
       }
     },
-    watch: {
-      // 当数据加载函数改变时，就必须加载数据了
-      async loadDataFunc(newVal) {
-        console.log(newVal);
-        if (newVal) {
-          try {
-            this.loading = true;
-            let res = await newVal(this.dataList.length, this.offset);
-            if (res && res.length) {
-              this.dataList = this.dataList.concat(res);
-              this.$Message.success(`成功获取到${res.length}条新数据`);
-            } else {
-              this.$Message.info(`已经获取了全部数据了`);
-              this.hasMore = false;
-            }
-          } catch (e) {
-            this.$Message.error("加载失败" + e.message);
-          } finally {
-            this.loading = false;
-          }
-        }
-      }
-    },
     methods: {
       /**
        * 监听模板点出了加载按钮时的操作

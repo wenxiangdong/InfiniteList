@@ -3,7 +3,6 @@
     <img src="./assets/logo.png">
     <InfiniteListComponent
       v-if="loadDataFunc"
-      v-on:on-load="handleLoadData"
       v-bind:load-data-func="loadDataFunc">
     </InfiniteListComponent>
   </div>
