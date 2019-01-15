@@ -4,26 +4,34 @@
       <slot></slot>
     </div>
     <div class="load-wrapper">
-      <Button
-        :icon="tipIcon"
-        type="text"
-        v-bind:disabled="!hasMore"
-        v-bind:style="{color: tipColor}"
-        v-bind:loading="loading"
-        v-on:click="handleClickLoad">
-        {{loadButtonText}}
-      </Button>
+      <template v-if="!hasMore">
+        <a style="color: #c5c8ce" href="javascript:return false;">{{loadButtonText}}</a>
+      </template>
+      <template v-else>
+        <template v-if="loading">
+          <Loading v-bind:color="tipColor" v-bind:text="loadButtonText"/>
+        </template>
+        <template v-else>
+          <a
+            v-on:click="handleClickLoad"
+            v-bind:style="{color: tipColor}">
+            {{loadButtonText}}
+          </a>
+        </template>
+      </template>
     </div>
   </div>
 </template>
 
 <script>
+  import Loading from "./Loading";
   /**
    * 事件
    * on-request-load 请求加载数据(一般是更新数据源）
    * oon-load-completed 加载数据完成
    */
   export default {
+    components: {Loading},
     props: {
       loadTip: {
         type: String,
@@ -50,9 +58,6 @@
       loadButtonText() {
         return this.loading ? this.loadingTip :
           (this.hasMore ? this.loadTip : this.noMoreTip);
-      },
-      tipIcon() {
-        return this.hasMore ? "md-arrow-dropdown" : "md-checkmark-circle"
       }
     },
     methods: {
@@ -75,5 +80,9 @@
   .load-wrapper {
     margin-top: 20px;
     text-align: center;
+  }
+  a {
+    text-decoration: none;
+    cursor: pointer;
   }
 </style>
